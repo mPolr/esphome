@@ -1,0 +1,53 @@
+esphome:
+  name: aquarium
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: "SSID_HERE"
+  password: "PASSWORD_HERE"
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Aquarium Fallback Hotspot"
+    password: "PASSWORD_HERE"
+
+captive_portal:
+
+# Enable logging
+#logger:
+#  level: DEBUG
+
+i2c:
+  sda: D2
+  scl: D1
+  
+dallas:
+   - pin: D3
+     update_interval: 30s
+  
+sensor:
+  - platform: bme280
+    temperature:
+      name: "BME280 Temperature"
+      oversampling: 8x
+    pressure:
+      name: "BME280 Pressure"
+    humidity:
+      name: "BME280 Humidity"
+    address: 0x76
+    update_interval: 30s
+  - platform: dallas
+    address: 0x920120337D2F7E28
+    name: "Aqarium Temperature"
+
+mqtt:
+  broker: MQTT_HOST
+  port: MQTT_PORT
+  username: MQTT_USER
+  password: MQTT_PASSWORD
+
+ota:
+  password: "OTA_PASSWORD"
+
+web_server:
+  port: 80
